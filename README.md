@@ -1,4 +1,4 @@
 Launcher-Unicraft
 =================
 
-Launcher du serveur unicraft
+Launcher du serveur Unicraft
