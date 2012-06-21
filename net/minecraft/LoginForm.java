@@ -48,7 +48,7 @@ public class LoginForm extends TransparentPanel
   private TransparentButton launchButton = new TransparentButton("Se connecter");
   private TransparentButton optionsButton = new TransparentButton("Options");
   private TransparentButton retryButton = new TransparentButton("Rééssayer");
-  private TransparentButton offlineButton = new TransparentButton("Jouer hors ligne");
+  private TransparentButton offlineButton = new TransparentButton("Jouer hors-ligne");
   private TransparentLabel errorLabel = new TransparentLabel("", 0);
   private LauncherFrame launcherFrame;
   private boolean outdated = false;
@@ -225,7 +225,7 @@ public class LoginForm extends TransparentPanel
     TransparentPanel titles = new TransparentPanel(gl1);
     TransparentPanel values = new TransparentPanel(gl2);
 
-    titles.add(new TransparentLabel("Nom de compte:", 4));
+    titles.add(new TransparentLabel("Nom d'utilisateur:", 4));
 
     values.add(this.userName);
 
