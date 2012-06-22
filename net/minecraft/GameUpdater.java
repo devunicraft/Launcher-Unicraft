@@ -174,7 +174,7 @@ public static boolean forceUpdate = false;
    /* 178 */       URL oldPath = path;
    /*     */ 
    /* 181 */       if (nextToken.indexOf("craft.jar") >= 0) {
-   /* 182 */         path = new URL("http://teamunilife.hebergratuit.com/LauncherUnicraft/");
+   /* 182 */         path = new URL("http://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/");
    /*     */       }
    /*     */ 
    /* 185 */       System.out.println(path + nextToken.replaceAll("minecraft.jar", "unicraft.jar"));
@@ -249,7 +249,7 @@ public static boolean forceUpdate = false;
 /* 254 */         boolean updateunicraft = false;
 /*     */         try {
 /* 256 */           String version_unicraft = "";
-/* 257 */           URL url_version = new URL("http://teamunilife.hebergratuit.com/LauncherUnicraft/version_unicraft.txt");
+/* 257 */           URL url_version = new URL("http://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/version_unicraft.txt");
 /*     */           try {
 /* 259 */             BufferedReader in = new BufferedReader(new InputStreamReader(url_version.openStream()));
 /* 260 */             version_unicraft = in.readLine();
