@@ -17,7 +17,7 @@ public class LoginFormThread extends Thread
     {
         try
         {
-         editorPane.setPage(new URL("http://teamunilife.hebergratuit.com/LauncherUnicraft/News.htm"));
+         editorPane.setPage(new URL("http://teamunilife.hebergratuit.com/LauncherUnicraft/News.html"));
         }
         catch (Exception e)
         {
