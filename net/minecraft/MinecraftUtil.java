@@ -29,7 +29,7 @@ public class MinecraftUtil
 
   public static File getWorkingDirectory() {
     if (workDir == null) {
-      workDir = getWorkingDirectory("minecraft");
+      workDir = getWorkingDirectory("unicraft");
     }
     return workDir;
   }

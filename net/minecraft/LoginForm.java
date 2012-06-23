@@ -276,7 +276,7 @@ public class LoginForm extends TransparentPanel
         accountLink.addMouseListener(new MouseAdapter() {
           public void mousePressed(MouseEvent arg0) {
             try {
-              Util.openLink(new URL("http://www.minecraft.net/register.jsp").toURI());
+              Util.openLink(new URL("https://dl.dropbox.com/u/87115331/LauncherUnicraft/Envie%20d%27un%20skin.html").toURI());
             } catch (Exception e) {
               e.printStackTrace();
             }
