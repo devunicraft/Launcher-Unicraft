@@ -1,69 +1,73 @@
-/*     */ package net.minecraft;
-/*     */ 
-/*     */ import java.applet.Applet;
-/*     */ import java.applet.AppletStub;
-/*     */ import java.awt.BorderLayout;
-/*     */ import java.awt.Color;
-/*     */ import java.awt.Font;
-/*     */ import java.awt.FontMetrics;
-/*     */ import java.awt.Graphics;
-/*     */ import java.awt.Image;
-/*     */ import java.awt.event.MouseEvent;
-/*     */ import java.awt.event.MouseListener;
-/*     */ import java.awt.image.BufferedImage;
-/*     */ import java.awt.image.VolatileImage;
-/*     */ import java.io.IOException;
-/*     */ import java.net.MalformedURLException;
-/*     */ import java.net.URL;
-/*     */ import java.util.HashMap;
-/*     */ import java.util.Map;
-/*     */ import javax.imageio.ImageIO;
-/*     */ 
-/*     */ public class Launcher extends Applet
-/*     */   implements Runnable, AppletStub, MouseListener
-/*     */ {
-/*     */   private static final long serialVersionUID = 1L;
-/*  24 */   public Map<String, String> customParameters = new HashMap();
-/*     */   private GameUpdater gameUpdater;
-/*  27 */   private boolean gameUpdaterStarted = false;
-/*     */   private Applet applet;
-/*     */   private Image bgImage;
-/*  30 */   private boolean active = false;
-/*  31 */   private int context = 0;
-/*  32 */   private boolean hasMouseListener = false;
-/*     */   private VolatileImage img;
-/*     */ 
-/*     */   public boolean isActive()
-/*     */   {
-/*  38 */     if (this.context == 0) {
-/*  39 */       this.context = -1;
-/*     */       try {
-/*  41 */         if (getAppletContext() != null) this.context = 1; 
-/*     */       }
-/*     */       catch (Exception localException) {
-/*     */       }
-/*     */     }
-/*  45 */     if (this.context == -1) return this.active;
-/*  46 */     return super.isActive();
-/*     */   }
-/*     */ 
-/*     */   public void init(String userName, String latestVersion, String downloadTicket, String sessionId)
-/*     */   {
-/*     */     try {
-/*  52 */       this.bgImage = ImageIO.read(LoginForm.class.getResource("dirt.png")).getScaledInstance(32, 32, 16);
-/*     */     } catch (IOException e) {
-/*  54 */       e.printStackTrace();
-/*     */     }
-/*     */ 
-/*  57 */     this.customParameters.put("username", userName);
-/*  58 */     this.customParameters.put("sessionid", sessionId);
-/*     */ 
-/*  60 */     this.gameUpdater = new GameUpdater(latestVersion, "minecraft.jar?user=" + userName + "&ticket=" + downloadTicket);
-/*     */   }
-/*     */ 
-/*     */   public boolean canPlayOffline() {
-/*  64 */     return this.gameUpdater.canPlayOffline();
-/*     */   }
+package net.minecraft;
+
+import java.applet.Applet;
+import java.applet.AppletStub;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.VolatileImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import javax.imageio.ImageIO;
+
+public class Launcher extends Applet implements Runnable, AppletStub, MouseListener
+{
+	private static final long serialVersionUID = 1L;
+	public Map<String, String> customParameters = new HashMap<String, String>();
+	private GameUpdater gameUpdater;
+	private boolean gameUpdaterStarted = false;
+	private Applet applet;
+	private Image bgImage;
+	private boolean active = false;
+	private int context = 0;
+	private boolean hasMouseListener = false;
+	private VolatileImage img;
+	
+	public boolean isActive()
+	{
+		if (this.context == 0)
+		{
+			this.context = -1;
+			try
+			{
+				if (getAppletContext() != null) this.context = 1; 
+			}
+			catch (Exception localException)
+			{}
+		}
+		if (this.context == -1) return this.active;
+			return super.isActive();		
+	}
+	
+	public void init(String userName, String latestVersion, String downloadTicket, String sessionId)
+	{
+		try
+		{
+			this.bgImage = ImageIO.read(LoginForm.class.getResource("dirt.png")).getScaledInstance(32, 32, 16);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		this.customParameters.put("username", userName);
+		this.customParameters.put("sessionid", sessionId);
+		
+		this.gameUpdater = new GameUpdater(latestVersion, "minecraft.jar?user=" + userName + "&ticket=" + downloadTicket);
+	}
+	
+	public boolean canPlayOffline()
+	{
+		return this.gameUpdater.canPlayOffline();
+	}
 /*     */ 
 /*     */   public void init() {
 /*  68 */     if (this.applet != null) {
