@@ -2,6 +2,9 @@
 ## Eclipse
 #################
 
+#By Axel
+*.class
+
 *.pydevproject
 .project
 .metadata
