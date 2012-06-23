@@ -30,7 +30,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -200,7 +199,7 @@ public class LoginForm extends TransparentPanel
     southPanel.add(new LogoPanel(), "West");
     southPanel.add(new TransparentPanel(), "Center");
     southPanel.add(center(buildLoginPanel()), "East");
-    southPanel.setPreferredSize(new Dimension(100, 100));
+    southPanel.setPreferredSize(new Dimension(PANEL_SIZE, PANEL_SIZE));
 
     p.add(southPanel, "South");
     return p;
@@ -349,7 +348,7 @@ public class LoginForm extends TransparentPanel
     southPanel.add(new LogoPanel(), "West");
     southPanel.add(new TransparentPanel(), "Center");
     southPanel.add(center(buildOfflinePanel()), "East");
-    southPanel.setPreferredSize(new Dimension(100, 100));
+    southPanel.setPreferredSize(new Dimension(PANEL_SIZE, PANEL_SIZE));
 
     p.add(southPanel, "South");
     return p;
@@ -422,7 +421,7 @@ public class LoginForm extends TransparentPanel
     JLabel label = new TransparentLabel("Connection en cours...      ", 0);
     label.setFont(new Font(null, 1, 16));
     southPanel.add(center(label), "East");
-    southPanel.setPreferredSize(new Dimension(100, 100));
+    southPanel.setPreferredSize(new Dimension(PANEL_SIZE, PANEL_SIZE));
 
     panel.add(southPanel, "South");
 

@@ -105,71 +105,71 @@ public class LauncherFrame extends Frame
 
 	private void showError(String string)
 	{}
-/*     */ 
-public String getFakeResult(String userName) {
-    return MinecraftUtil.getFakeLatestVersion() + ":35b9fd01865fda9d70b157e244cf801c:" + userName + ":12345:";
-  }
-
-  public void login(String userName) {
-    String result = getFakeResult(userName);
-    String[] values = result.split(":");
-    launcher = new Launcher();
-    launcher.customParameters.putAll(customParameters);
-    launcher.customParameters.put("userName", values[2].trim());
-    launcher.customParameters.put("sessionId", values[3].trim());
-    launcher.customParameters.put("latestVersion", values[0].trim());
-    launcher.customParameters.put("downloadTicket", values[1].trim());
-    launcher.init();
-    removeAll();
-    add(launcher, "Center");
-    validate();
-    launcher.start();
-    loginForm.loginOk();
-    loginForm = null;
-    setTitle("Unicraft");
-  }
-
-/*     */ 
-/*     */   public boolean canPlayOffline(String userName) {
-/* 146 */     Launcher launcher = new Launcher();
-/* 147 */     launcher.customParameters.putAll(this.customParameters);
-/* 148 */     launcher.init(userName, null, null, null);
-/* 149 */     return launcher.canPlayOffline();
-/*     */   }
-/*     */ 
-/*     */   public static void main(String[] args) {
-/*     */     try {
-/* 154 */       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-/*     */     }
-/*     */     catch (Exception localException) {
-/*     */     }
-/* 158 */     LauncherFrame launcherFrame = new LauncherFrame();
-/* 159 */     launcherFrame.setVisible(true);
-/* 160 */     launcherFrame.customParameters.put("stand-alone", "true");
-/*     */ 
-/* 162 */     if (args.length >= 3) {
-/* 163 */       String ip = args[2];
-/* 164 */       String port = "25565";
-/* 165 */       if (ip.contains(":")) {
-/* 166 */         String[] parts = ip.split(":");
-/* 167 */         ip = parts[0];
-/* 168 */         port = parts[1];
-/*     */       }
-/*     */ 
-/* 171 */       launcherFrame.customParameters.put("server", ip);
-/* 172 */       launcherFrame.customParameters.put("port", port);
-/*     */     }
-/*     */ 
-/* 175 */     if (args.length >= 1) {
-/* 176 */       launcherFrame.loginForm.userName.setText(args[0]);
-/* 177 */       if (args.length >= 2) {
-/* 179 */         launcherFrame.loginForm.doLogin();
-/*     */       }
-/*     */     }
-/*     */   }
-/*     */ }
-
-/* Location:           C:\Documents and Settings\FLEJA\Bureau\minecraft.jar
- * Qualified Name:     net.minecraft.LauncherFrame
- * JD-Core Version:    0.6.0
- */
+	
+	public String getFakeResult(String userName)
+	{
+		return MinecraftUtil.getFakeLatestVersion() + ":35b9fd01865fda9d70b157e244cf801c:" + userName + ":12345:";
+	}
+	
+	public void login(String userName)
+	{
+		String result = getFakeResult(userName);
+	    String[] values = result.split(":");
+	    launcher = new Launcher();
+	    launcher.customParameters.putAll(customParameters);
+	    launcher.customParameters.put("userName", values[2].trim());
+	    launcher.customParameters.put("sessionId", values[3].trim());
+	    launcher.customParameters.put("latestVersion", values[0].trim());
+	    launcher.customParameters.put("downloadTicket", values[1].trim());
+	    launcher.init();
+	    removeAll();
+	    add(launcher, "Center");
+	    validate();
+	    launcher.start();
+	    loginForm.loginOk();
+	    loginForm = null;
+	    setTitle("Unicraft");
+	}
+	
+	public boolean canPlayOffline(String userName)
+	{
+		Launcher launcher = new Launcher();
+		launcher.customParameters.putAll(this.customParameters);
+		launcher.init(userName, null, null, null);
+		return launcher.canPlayOffline();
+	}
+	
+	public static void main(String[] args)
+	{
+		try
+		{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception localException)
+		{}
+		
+		LauncherFrame launcherFrame = new LauncherFrame();
+		launcherFrame.setVisible(true);
+		launcherFrame.customParameters.put("stand-alone", "true");
+		
+		if (args.length >= 3)
+		{
+			String ip = args[2];
+			String port = "25565";
+			if (ip.contains(":"))
+			{
+				String[] parts = ip.split(":");
+				ip = parts[0];
+				port = parts[1];
+			}
+			launcherFrame.customParameters.put("server", ip);
+			launcherFrame.customParameters.put("port", port);
+		}
+		if (args.length >= 1)
+		{
+			launcherFrame.loginForm.userName.setText(args[0]);
+			if (args.length >= 2)
+				launcherFrame.loginForm.doLogin();
+		}
+	}
+}
