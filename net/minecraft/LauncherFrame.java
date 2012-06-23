@@ -1,100 +1,110 @@
-/*     */ package net.minecraft;
-/*     */ 
-/*     */ import java.awt.BorderLayout;
-/*     */ import java.awt.Color;
-/*     */ import java.awt.Dimension;
-/*     */ import java.awt.Frame;
-/*     */ import java.awt.event.WindowAdapter;
-/*     */ import java.awt.event.WindowEvent;
-/*     */ import java.io.IOException;
-/*     */ import java.io.PrintStream;
-/*     */ import java.net.URLEncoder;
-/*     */ import java.util.HashMap;
-/*     */ import java.util.Map;
-/*     */ import javax.imageio.ImageIO;
-/*     */ import javax.swing.JPanel;
-/*     */ import javax.swing.JPasswordField;
-/*     */ import javax.swing.JTextField;
+package net.minecraft;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
-/*     */ 
-/*     */ public class LauncherFrame extends Frame
-/*     */ {
-/*     */   public static final int VERSION = 13;
-/*     */   private static final long serialVersionUID = 1L;
-/*  21 */   public Map<String, String> customParameters = new HashMap();
-/*     */   public Launcher launcher;
-/*     */   public LoginForm loginForm;
-/*     */ 
-/*     */   public LauncherFrame()
-/*     */   {
-/*  27 */     super("Unicraft");
-/*     */ 
-/*  29 */     setBackground(Color.BLACK);
-/*  30 */     this.loginForm = new LoginForm(this);
-/*  31 */     JPanel p = new JPanel();
-/*  32 */     p.setLayout(new BorderLayout());
-/*  33 */     p.add(this.loginForm, "Center");
-/*     */ 
-/*  35 */     p.setPreferredSize(new Dimension(854, 480));
-/*     */ 
-/*  37 */     setLayout(new BorderLayout());
-/*  38 */     add(p, "Center");
-/*     */ 
-/*  40 */     pack();
-/*  41 */     setLocationRelativeTo(null);
-/*     */     try
-/*     */     {
-/*  44 */       setIconImage(ImageIO.read(LauncherFrame.class.getResource("favicon.png")));
-/*     */     } catch (IOException e1) {
-/*  46 */       e1.printStackTrace();
-/*     */     }
-/*     */ 
-/*  49 */     addWindowListener(new WindowAdapter() {
-/*     */       public void windowClosing(WindowEvent arg0) {
-/*  51 */         new Thread() {
-/*     */           public void run() {
-/*     */             try {
-/*  54 */               Thread.sleep(30000L);
-/*     */             } catch (InterruptedException e) {
-/*  56 */               e.printStackTrace();
-/*     */             }
-/*  58 */             System.out.println("FORCING EXIT!");
-/*  59 */             System.exit(0);
-/*     */           }
-/*     */         }
-/*  62 */         .start();
-/*  63 */         if (LauncherFrame.this.launcher != null) {
-/*  64 */           LauncherFrame.this.launcher.stop();
-/*  65 */           LauncherFrame.this.launcher.destroy();
-/*     */         }
-/*  67 */         System.exit(0);
-/*     */       } } );
-/*     */   }
-/*     */ 
-/*     */   public void playCached(String userName) {
-/*     */     try {
-/*  74 */       if ((userName == null) || (userName.length() <= 0)) {
-/*  75 */         userName = "Player";
-/*     */       }
-/*  77 */       this.launcher = new Launcher();
-/*  78 */       this.launcher.customParameters.putAll(this.customParameters);
-/*  79 */       this.launcher.customParameters.put("userName", userName);
-/*  80 */       this.launcher.init();
-/*  81 */       removeAll();
-/*  82 */       add(this.launcher, "Center");
-/*  83 */       validate();
-/*  84 */       this.launcher.start();
-/*  85 */       this.loginForm = null;
-/*  86 */       setTitle("Unicraft");
-/*     */     } catch (Exception e) {
-/*  88 */       e.printStackTrace();
-/*  89 */       showError(e.toString());
-/*     */     }
-/*     */   }
-private void showError(String string) {
-	// TODO Auto-generated method stub
+
+public class LauncherFrame extends Frame
+{
+	public static final int VERSION = 13;
+	private static final long serialVersionUID = 1L;
+	public Map<String, String> customParameters = new HashMap<String, String>();
+	public Launcher launcher;
+	public LoginForm loginForm;
+
+	public LauncherFrame()
+	{
+		super("Unicraft");
+		
+		setBackground(Color.BLACK);
+		this.loginForm = new LoginForm(this);
+		JPanel p = new JPanel();
+		p.setLayout(new BorderLayout());
+		p.add(this.loginForm, "Center");
+		
+		p.setPreferredSize(new Dimension(854, 480));
+		
+		setLayout(new BorderLayout());
+		add(p, "Center");
+		
+		pack();
+		setLocationRelativeTo(null);
+		try
+		{
+			setIconImage(ImageIO.read(LauncherFrame.class.getResource("favicon.png")));
+		}
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+		}
+		addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent arg0)
+			{
+				new Thread()
+				{
+					public void run()
+					{
+						try
+						{
+							Thread.sleep(30000L);
+						}
+						catch (InterruptedException e)
+						{
+							e.printStackTrace();
+						}
+						System.out.println("FORCING EXIT!");
+						System.exit(0);
+					}
+				}.start();
+				
+				if (LauncherFrame.this.launcher != null)
+				{
+					LauncherFrame.this.launcher.stop();
+					LauncherFrame.this.launcher.destroy();
+				}
+				System.exit(0);
+			}
+		} );
+	}
 	
-}
+	public void playCached(String userName)
+	{
+		try
+		{
+			if ((userName == null) || (userName.length() <= 0))
+			{
+				userName = "Player";
+			}
+			this.launcher = new Launcher();
+			this.launcher.customParameters.putAll(this.customParameters);
+			this.launcher.customParameters.put("userName", userName);
+			this.launcher.init();
+			removeAll();
+			add(this.launcher, "Center");
+			validate();
+			this.launcher.start();
+			this.loginForm = null;
+			setTitle("Unicraft");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			showError(e.toString());
+		}
+	}
+
+	private void showError(String string)
+	{}
 /*     */ 
 public String getFakeResult(String userName) {
     return MinecraftUtil.getFakeLatestVersion() + ":35b9fd01865fda9d70b157e244cf801c:" + userName + ":12345:";

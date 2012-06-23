@@ -434,7 +434,7 @@ try
 {
 /* 334 */      Field field = ClassLoader.class.getDeclaredField("loadedLibraryNames");
 /* 335 */      field.setAccessible(true);
-/* 336 */      Vector libs = (Vector)field.get(getClass().getClassLoader());
+/* 336 */      Vector<?> libs = (Vector<?>)field.get(getClass().getClassLoader());
 /*    */
 /* 338 */      String path = new File(nativePath).getCanonicalPath();
 /*    */
@@ -453,7 +453,7 @@ try
 /*    */
 /*    */  public Applet createApplet() throws ClassNotFoundException, InstantiationException, IllegalAccessException
 /*    */  {
-/* 355 */    Class appletClass = classLoader.loadClass("net.minecraft.client.MinecraftApplet");
+/* 355 */    Class<?> appletClass = classLoader.loadClass("net.minecraft.client.MinecraftApplet");
 /* 356 */    return (Applet)appletClass.newInstance();
 /*    */  }
 /*    */
@@ -610,8 +610,8 @@ throws Exception
 /* 553 */    File f = new File(in);
 /* 554 */    FileInputStream fileInputHandle = new FileInputStream(f);
 /*    */
-/* 557 */    Class clazz = Class.forName("LZMA.LzmaInputStream");
-/* 558 */    Constructor constructor = clazz.getDeclaredConstructor(new Class[] { InputStream.class });
+/* 557 */    Class<?> clazz = Class.forName("LZMA.LzmaInputStream");
+/* 558 */    Constructor<?> constructor = clazz.getDeclaredConstructor(new Class[] { InputStream.class });
 /* 559 */    InputStream inputHandle = (InputStream)constructor.newInstance(new Object[] { fileInputHandle });
 /*    */
 /* 562 */    OutputStream outputHandle = new FileOutputStream(out);
@@ -702,7 +702,7 @@ throws Exception
 }
 /*    */
 /* 660 */    JarFile jarFile = new JarFile(path + nativeJar, true);
-/* 661 */    Enumeration entities = jarFile.entries();
+/* 661 */    Enumeration<?> entities = jarFile.entries();
 /*    */
 /* 663 */    this.totalSizeExtract = 0;
 /*    */
@@ -807,32 +807,39 @@ throws Exception
 /* 771 */    if (e != null)
 /* 772 */      System.out.println(generateStacktrace(e));
 /*    */  }
-/*    */
-/*    */  public boolean canPlayOffline()
-/*    */  {
-try
-{
-/* 779 */      String path = (String)AccessController.doPrivileged(new PrivilegedExceptionAction() {
-    public Object run() throws Exception {
-/* 781 */          return Util.getWorkingDirectory() + File.separator + "bin" + File.separator;
-    }
-  });
-/* 785 */      File dir = new File(path);
-/* 786 */      if (!dir.exists()) return false;
-/*    */
-/* 788 */      dir = new File(dir, "version");
-/* 789 */      if (!dir.exists()) return false;
-/*    */
-/* 791 */      if (dir.exists()) {
-/* 792 */        String version = readVersionFile(dir);
-/* 793 */        if ((version != null) && (version.length() > 0))
-/* 794 */          return true;
-  }
+
+	public boolean canPlayOffline()
+	{
+		try
+		{
+			String path = (String)AccessController.doPrivileged(new PrivilegedExceptionAction<Object>()
+			{
+				public Object run() throws Exception
+				{
+					return Util.getWorkingDirectory() + File.separator + "bin" + File.separator;
+				}
+			});
+			
+			File dir = new File(path);
+			if (!dir.exists())
+				return false;
+			
+			dir = new File(dir, "version");
+			if (!dir.exists())
+				return false;
+			
+			if (dir.exists())
+			{
+				String version = readVersionFile(dir);
+				if ((version != null) && (version.length() > 0))
+					return true;
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
 }
-catch (Exception e) {
-/* 798 */      e.printStackTrace();
-/* 799 */      return false;
-}
-/* 801 */    return false;
-/*    */  }
-/*    */ }
