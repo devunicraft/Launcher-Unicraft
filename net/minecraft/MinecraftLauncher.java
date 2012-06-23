@@ -45,8 +45,3 @@ public class MinecraftLauncher
 		}
 	}
 }
-
-/* Location:           C:\Documents and Settings\FLEJA\Bureau\minecraft.jar
- * Qualified Name:     net.minecraft.MinecraftLauncher
- * JD-Core Version:    0.6.0
- */
