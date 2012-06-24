@@ -54,10 +54,13 @@ public class GameUpdater implements Runnable
 	public static final int STATE_INITIALIZE_REAL_APPLET = 8;
 	public static final int STATE_START_REAL_APPLET = 9;
 	public static final int STATE_DONE = 10;
+	public static final int STABLE = 11;
+	public static final int BETA = 12;
 	public int percentage;
 	public int currentSizeDownload;
 	public int totalSizeDownload;
 	public static boolean forceUpdate = false;
+	public static int releaseType = STABLE;
 	public int currentSizeExtract;
 	public int totalSizeExtract;
 	protected URL[] urlList;

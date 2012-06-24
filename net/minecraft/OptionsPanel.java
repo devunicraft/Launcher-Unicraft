@@ -14,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,6 +24,7 @@ public class OptionsPanel extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 	private JButton forceButton;
+	private JCheckBox getBetaCheckBox;
 
 	public OptionsPanel(Frame parent)
 	{
@@ -41,11 +43,12 @@ public class OptionsPanel extends JDialog
 		JPanel fieldPanel = new JPanel(new GridLayout(0, 1));
 		optionsPanel.add(labelPanel, "West");
 		optionsPanel.add(fieldPanel, "Center");
-
+		
+		// Bouton Forcer la mise à jour
 		forceButton = new JButton("Forcer la Mise à jour!");
 		forceButton.addActionListener(new ActionListener()
 		{
-			public void actionPerformed(ActionEvent ae)
+			public void actionPerformed(ActionEvent event)
 			{
 				GameUpdater.forceUpdate = true;
 				forceButton.setText("Elle le sera!");
@@ -55,6 +58,27 @@ public class OptionsPanel extends JDialog
 		labelPanel.add(new JLabel("Forcer la mise à jour: ", 4));
 		fieldPanel.add(forceButton);
 		
+		// Case à cocher pour télécharger la version bêta
+		getBetaCheckBox = new JCheckBox();
+		JLabel getBetaLabel =  new JLabel("Télécharger la version bêta du client : ");
+		getBetaCheckBox.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event)
+			{
+				if(getBetaCheckBox.isEnabled())
+				{
+					GameUpdater.releaseType = GameUpdater.BETA;
+				}
+				else
+				{
+					GameUpdater.releaseType = GameUpdater.STABLE;
+				}
+			}
+		});
+		labelPanel.add(getBetaLabel);
+		fieldPanel.add(getBetaCheckBox);
+		
+		// Lien vers l'emplacement du dossier .unicraft
 		labelPanel.add(new JLabel("Emplacement de Unicraft: ", 4));
 		TransparentLabel dirLink = new TransparentLabel(Util.getWorkingDirectory().toString())
 		{
@@ -111,7 +135,7 @@ public class OptionsPanel extends JDialog
 
 		JPanel buttonsPanel = new JPanel(new BorderLayout());
 		buttonsPanel.add(new JPanel(), "Center");
-		JButton doneButton = new JButton("Terminer");
+		JButton doneButton = new JButton("Terminé");
 		doneButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent ae)
