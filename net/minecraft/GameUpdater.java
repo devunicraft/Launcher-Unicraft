@@ -54,13 +54,10 @@ public class GameUpdater implements Runnable
 	public static final int STATE_INITIALIZE_REAL_APPLET = 8;
 	public static final int STATE_START_REAL_APPLET = 9;
 	public static final int STATE_DONE = 10;
-	public static final int STABLE = 11;
-	public static final int BETA = 12;
 	public int percentage;
 	public int currentSizeDownload;
 	public int totalSizeDownload;
 	public static boolean forceUpdate = false;
-	public static int releaseType = STABLE;
 	public int currentSizeExtract;
 	public int totalSizeExtract;
 	protected URL[] urlList;
@@ -73,6 +70,7 @@ public class GameUpdater implements Runnable
     public String fatalErrorDescription;
     protected String subtaskMessage = "";
     protected int state = 1;
+	private static boolean betaRelease = false;
     
     protected boolean lzmaSupported = false;
     protected boolean pack200Supported = false;
@@ -83,11 +81,33 @@ public class GameUpdater implements Runnable
     protected static boolean natives_loaded = false;
 	private String latestVersion;
 	private String mainGameUrl;
+	private static String unicraftJarUrl;
+	private static String unicraftVersionUrl;
 	
 	public GameUpdater(String latestVersion, String mainGameUrl)
 	{
 		this.latestVersion = latestVersion;
 		this.mainGameUrl = mainGameUrl;
+		unicraftJarUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/";
+		unicraftVersionUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/version_unicraft.txt";
+	}
+	
+	public static void setBeta(boolean toggle)
+	{
+		if(toggle)
+		{
+			betaRelease = true;
+			unicraftJarUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Beta/";
+			unicraftVersionUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Beta/version_unicraft_beta.txt";
+			System.out.println("Beta enabled");
+		}
+		else
+		{
+			betaRelease = false;
+			unicraftJarUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/";
+			unicraftVersionUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/version_unicraft.txt";
+			System.out.println("Beta disabled");
+		}
 	}
 	
 	public void init()
@@ -152,9 +172,9 @@ public class GameUpdater implements Runnable
 			return "Chargement terminé";
 			
 		case 11:
-			return "Mise à  jour Unicraft";
+			return "Mise à jour Unicraft";
 		}
-		return "Phase inconnu";
+		return "Phase inconnue";
 	}
 	
 	protected String trimExtensionByCapabilities(String file)
@@ -191,7 +211,7 @@ public class GameUpdater implements Runnable
 			
 			if (nextToken.indexOf("craft.jar") >= 0)
 			{
-				path = new URL("http://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/");
+				path = new URL(unicraftJarUrl);
 			}
 			
 			System.out.println(path + nextToken.replaceAll("minecraft.jar", "unicraft.jar"));
@@ -274,7 +294,7 @@ public class GameUpdater implements Runnable
 				try
 				{
 					String version_unicraft = "";
-					URL url_version = new URL("http://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/version_unicraft.txt");
+					URL url_version = new URL(unicraftVersionUrl);
 					try
 					{
 						BufferedReader in = new BufferedReader(new InputStreamReader(url_version.openStream()));
@@ -885,5 +905,10 @@ public class GameUpdater implements Runnable
 			return false;
 		}
 		return false;
+	}
+	
+	public static boolean isBeta()
+	{
+		return betaRelease;
 	}
 }

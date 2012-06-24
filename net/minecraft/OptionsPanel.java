@@ -13,18 +13,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
 public class OptionsPanel extends JDialog
 {
 	private static final long serialVersionUID = 1L;
-	private JButton forceButton;
-	private JCheckBox getBetaCheckBox;
+	private JCheckBox forceButton;
+	private JRadioButton stableReleaseRButton;
+	private JRadioButton betaReleaseRButton;
 
 	public OptionsPanel(Frame parent)
 	{
@@ -45,38 +49,67 @@ public class OptionsPanel extends JDialog
 		optionsPanel.add(fieldPanel, "Center");
 		
 		// Bouton Forcer la mise à jour
-		forceButton = new JButton("Forcer la Mise à jour!");
+		forceButton = new JCheckBox("Forcer la Mise à jour!");
 		forceButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent event)
 			{
-				GameUpdater.forceUpdate = true;
-				forceButton.setText("Elle le sera!");
-				forceButton.setEnabled(false);
-			}
-		});
-		labelPanel.add(new JLabel("Forcer la mise à jour: ", 4));
-		fieldPanel.add(forceButton);
-		
-		// Case à cocher pour télécharger la version bêta
-		getBetaCheckBox = new JCheckBox();
-		JLabel getBetaLabel =  new JLabel("Télécharger la version bêta du client : ");
-		getBetaCheckBox.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent event)
-			{
-				if(getBetaCheckBox.isEnabled())
+				if(forceButton.isSelected())
 				{
-					GameUpdater.releaseType = GameUpdater.BETA;
+					GameUpdater.forceUpdate = true;
 				}
 				else
 				{
-					GameUpdater.releaseType = GameUpdater.STABLE;
+					GameUpdater.forceUpdate = false;
 				}
 			}
 		});
+		forceButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		labelPanel.add(new JLabel("Forcer la mise à jour: ", 4));
+		fieldPanel.add(forceButton);
+		
+		// Bouton à sélectionner pour choisir le type de version
+		ButtonGroup releaseTypeBG = new ButtonGroup();
+		stableReleaseRButton = new JRadioButton("Stable");
+		betaReleaseRButton = new JRadioButton("Beta");
+		JLabel getBetaLabel =  new JLabel("Choisir votre type de version : ");
+		JPanel releaseTypePanel = new JPanel(new GridLayout(1, 0));
+		stableReleaseRButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event)
+			{
+				if(stableReleaseRButton.isSelected())
+				{
+					GameUpdater.setBeta(false);
+				}
+			}
+		});
+		betaReleaseRButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent event)
+			{
+				if(betaReleaseRButton.isSelected())
+				{
+					GameUpdater.setBeta(true);
+				}
+			}
+		});
+		if(GameUpdater.isBeta())
+		{
+			betaReleaseRButton.setSelected(true);
+		}
+		else
+		{
+			stableReleaseRButton.setSelected(true);
+		}
+		releaseTypeBG.add(stableReleaseRButton);
+		releaseTypeBG.add(betaReleaseRButton);
+		releaseTypePanel.add(stableReleaseRButton);
+		releaseTypePanel.add(betaReleaseRButton);
+		stableReleaseRButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		betaReleaseRButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		labelPanel.add(getBetaLabel);
-		fieldPanel.add(getBetaCheckBox);
+		fieldPanel.add(releaseTypePanel);
 		
 		// Lien vers l'emplacement du dossier .unicraft
 		labelPanel.add(new JLabel("Emplacement de Unicraft: ", 4));
