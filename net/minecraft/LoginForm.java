@@ -18,6 +18,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.Random;
@@ -129,7 +130,9 @@ public class LoginForm extends TransparentPanel
 		    DataInputStream dis;
 		    
 		    if (cipher != null)
+		    {
 		    	dis = new DataInputStream(new CipherInputStream(new FileInputStream(lastLogin), cipher));
+		    }
 		    else
 		    {
 		    	dis = new DataInputStream(new FileInputStream(lastLogin));
@@ -137,9 +140,13 @@ public class LoginForm extends TransparentPanel
 		    this.userName.setText(dis.readUTF());
 		    dis.close();
 		}
-		catch (Exception e)
+		catch (FileNotFoundException ex)
 		{
-			e.printStackTrace();
+			this.userName.setText("");
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
 		}
 	}
 	
