@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -30,7 +29,7 @@ public class OptionsPanel extends JDialog
 	private JRadioButton stableReleaseRButton;
 	private JRadioButton betaReleaseRButton;
 
-	public OptionsPanel(Frame parent)
+	public OptionsPanel(final LauncherFrame parent)
 	{
 		super(parent);
 		
@@ -57,10 +56,12 @@ public class OptionsPanel extends JDialog
 				if(forceButton.isSelected())
 				{
 					GameUpdater.forceUpdate = true;
+					System.out.println("Force update enabled");
 				}
 				else
 				{
 					GameUpdater.forceUpdate = false;
+					System.out.println("Force update disabled");
 				}
 			}
 		});
@@ -80,7 +81,8 @@ public class OptionsPanel extends JDialog
 			{
 				if(stableReleaseRButton.isSelected())
 				{
-					GameUpdater.setBeta(false);
+					GameUpdater.betaRelease = false;
+					System.out.println("Stable enabled");
 				}
 			}
 		});
@@ -90,11 +92,12 @@ public class OptionsPanel extends JDialog
 			{
 				if(betaReleaseRButton.isSelected())
 				{
-					GameUpdater.setBeta(true);
+					GameUpdater.betaRelease = true;
+					System.out.println("Beta enabled");
 				}
 			}
 		});
-		if(GameUpdater.isBeta())
+		if(GameUpdater.betaRelease)
 		{
 			betaReleaseRButton.setSelected(true);
 		}

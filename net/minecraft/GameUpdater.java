@@ -58,6 +58,7 @@ public class GameUpdater implements Runnable
 	public int currentSizeDownload;
 	public int totalSizeDownload;
 	public static boolean forceUpdate = false;
+	public static boolean betaRelease = false;
 	public int currentSizeExtract;
 	public int totalSizeExtract;
 	protected URL[] urlList;
@@ -70,7 +71,6 @@ public class GameUpdater implements Runnable
     public String fatalErrorDescription;
     protected String subtaskMessage = "";
     protected int state = 1;
-	private static boolean betaRelease = false;
     
     protected boolean lzmaSupported = false;
     protected boolean pack200Supported = false;
@@ -81,8 +81,10 @@ public class GameUpdater implements Runnable
     protected static boolean natives_loaded = false;
 	private String latestVersion;
 	private String mainGameUrl;
-	private static String unicraftJarUrl;
-	private static String unicraftVersionUrl;
+	private String unicraftJarUrl;
+	private String unicraftVersionUrl;
+	private String unicraftJarName;
+	private String unicraftVersionFileName;
 	
 	public GameUpdater(String latestVersion, String mainGameUrl)
 	{
@@ -90,24 +92,8 @@ public class GameUpdater implements Runnable
 		this.mainGameUrl = mainGameUrl;
 		unicraftJarUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/";
 		unicraftVersionUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/version_unicraft.txt";
-	}
-	
-	public static void setBeta(boolean toggle)
-	{
-		if(toggle)
-		{
-			betaRelease = true;
-			unicraftJarUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Beta/";
-			unicraftVersionUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Beta/version_unicraft_beta.txt";
-			System.out.println("Beta enabled");
-		}
-		else
-		{
-			betaRelease = false;
-			unicraftJarUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/";
-			unicraftVersionUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/version_unicraft.txt";
-			System.out.println("Beta disabled");
-		}
+		unicraftJarName = "unicraft.jar";
+		unicraftVersionFileName = "version_unicraft.txt";
 	}
 	
 	public void init()
@@ -193,6 +179,20 @@ public class GameUpdater implements Runnable
 	
 	protected void loadJarURLs() throws Exception
 	{
+		if(!betaRelease)
+		{
+			unicraftJarUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/";
+			unicraftVersionUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Client/version_unicraft.txt";
+			unicraftJarName = "unicraft.jar";
+			unicraftVersionFileName = "version_unicraft.txt";
+		}
+		else
+		{
+			unicraftJarUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Beta/";
+			unicraftVersionUrl = "https://dl.dropbox.com/u/87115331/LauncherUnicraft/Beta/version_unicraft_beta.txt";
+			unicraftJarName = "unicraft_beta.jar";
+			unicraftVersionFileName = "version_unicraft_beta.txt";
+		}
 		this.state = 2;
 		String jarList = "lwjgl.jar, jinput.jar, lwjgl_util.jar, " + this.mainGameUrl;
 		jarList = trimExtensionByCapabilities(jarList);
@@ -214,13 +214,12 @@ public class GameUpdater implements Runnable
 				path = new URL(unicraftJarUrl);
 			}
 			
-			System.out.println(path + nextToken.replaceAll("minecraft.jar", "unicraft.jar"));
+			System.out.println(path + nextToken.replaceAll("minecraft.jar", unicraftJarName));
 			
 			if (nextToken.indexOf("craft.jar") >= 0)
 			{
-				this.urlList[i] = new URL(path, nextToken.replaceAll("minecraft.jar", "unicraft.jar"));
+				this.urlList[i] = new URL(path, nextToken.replaceAll("minecraft.jar", unicraftJarName));
 			}
-			
 			else
 			{
 				this.urlList[i] = new URL(path, nextToken);
@@ -304,7 +303,7 @@ public class GameUpdater implements Runnable
 					{
 						System.err.println(e);
 					}
-					File current_version_unicraft = new File(dir, "version_unicraft.txt");
+					File current_version_unicraft = new File(dir, unicraftVersionFileName);
 					
 					if (!current_version_unicraft.exists())
 					{
@@ -905,10 +904,5 @@ public class GameUpdater implements Runnable
 			return false;
 		}
 		return false;
-	}
-	
-	public static boolean isBeta()
-	{
-		return betaRelease;
 	}
 }
